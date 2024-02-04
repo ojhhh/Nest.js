@@ -13,11 +13,19 @@ import { BoardsService } from './boards.service';
 import { BoardStatus } from './boardStatus.enum';
 import { createBoardDto } from './dto/createBoard.dto';
 import { BoardStatusValidationPipe } from './pipes/boardStatusValidation.pipe';
+import { Board } from './boards.entity';
 
 @Controller('boards')
 export class BoardsController {
   constructor(private boardsService: BoardsService) {}
 
+  // ============== 데이터베이스를 활용한 게시판 연습 ==============
+
+  @Get('/:id')
+  getBoardById(@Param('id') id: number): Promise<Board> {
+    return this.boardsService.getBoardById(id);
+  }
+  // ============== 로컬 메모리를 활용한 게시판 연습 ==============
   // @Get() // router.get('/',()=>{})
   // getAllBoard(): Board[] {
   //   return this.boardsService.getAllBoards();
