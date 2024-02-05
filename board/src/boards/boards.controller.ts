@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   UsePipes,
@@ -30,6 +31,11 @@ export class BoardsController {
   @UsePipes(ValidationPipe)
   createBoard(@Body() CreateBoardDto: CreateBoardDto): Promise<Board> {
     return this.boardsService.createBoard(CreateBoardDto);
+  }
+
+  @Delete('/:id')
+  deleteBoard(@Param('id', ParseIntPipe) id): Promise<void> {
+    return this.boardsService.deleteBoard(id);
   }
   // ============== 로컬 메모리를 활용한 게시판 연습 ==============
   // @Get() // router.get('/',()=>{})

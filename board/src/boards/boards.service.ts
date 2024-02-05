@@ -5,15 +5,20 @@ import { CreateBoardDto } from './dto/createBoard.dto';
 import { BoardRepository } from './boards.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Board } from './boards.entity';
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class BoardsService {
   // ============== 데이터베이스를 활용한 게시판 연습 ==============
-  constructor(
-    @InjectRepository(Board)
-    private boardRepository: Repository<Board>,
-  ) {}
+  constructor(private boardRepository: BoardRepository) {}
+
+  async deleteBoard(id: number): Promise<void> {
+    const result = await this.boardRepository.deleteBoard(id);
+
+    if (result === undefined) {
+      throw new NotFoundException(`can't find Board id ${id}`);
+    }
+    console.log('result : ', result);
+  }
 
   async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
     // const { title, description } = createBoardDto;
@@ -29,13 +34,13 @@ export class BoardsService {
 
   async getBoardById(id: number): Promise<Board> {
     // Board는 entity에 정의된 클래스를 가져온것
-    const found = await this.boardRepository.findOne({ where: { id } });
+    // const found = await this.boardRepository.findOne({ where: { id } });
 
-    if (!found) {
-      throw new NotFoundException(`not found board ${id}`);
-    }
+    // if (!found) {
+    //   throw new NotFoundException(`not found board ${id}`);
+    // }
 
-    return found;
+    return this.boardRepository.getBoardById(id);
   }
   // ============== 로컬 메모리를 활용한 게시판 연습 ==============
   // // 그냥 Board만 정의 하면 타입에러
