@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { BoardStatus } from './boardStatus.enum';
-import { createBoardDto } from './dto/createBoard.dto';
+import { CreateBoardDto } from './dto/createBoard.dto';
 import { BoardStatusValidationPipe } from './pipes/boardStatusValidation.pipe';
 import { Board } from './boards.entity';
 
@@ -24,6 +24,12 @@ export class BoardsController {
   @Get('/:id')
   getBoardById(@Param('id') id: number): Promise<Board> {
     return this.boardsService.getBoardById(id);
+  }
+
+  @Post()
+  @UsePipes(ValidationPipe)
+  createBoard(@Body() CreateBoardDto: CreateBoardDto): Promise<Board> {
+    return this.boardsService.createBoard(CreateBoardDto);
   }
   // ============== 로컬 메모리를 활용한 게시판 연습 ==============
   // @Get() // router.get('/',()=>{})

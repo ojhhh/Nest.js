@@ -1,18 +1,31 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { BoardStatus } from './boardStatus.enum';
 import { v1 as uuid } from 'uuid';
-import { createBoardDto } from './dto/createBoard.dto';
+import { CreateBoardDto } from './dto/createBoard.dto';
 import { BoardRepository } from './boards.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Board } from './boards.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class BoardsService {
   // ============== 데이터베이스를 활용한 게시판 연습 ==============
   constructor(
-    @InjectRepository(BoardRepository)
-    private boardRepository: BoardRepository,
+    @InjectRepository(Board)
+    private boardRepository: Repository<Board>,
   ) {}
+
+  async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
+    // const { title, description } = createBoardDto;
+    // const board = this.boardRepository.create({
+    //   title,
+    //   description,
+    //   status: BoardStatus.PUBLIC,
+    // });
+
+    // await this.boardRepository.save(board);
+    return this.boardRepository.createBoard(createBoardDto);
+  }
 
   async getBoardById(id: number): Promise<Board> {
     // Board는 entity에 정의된 클래스를 가져온것
