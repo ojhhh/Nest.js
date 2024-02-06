@@ -12,7 +12,21 @@ export class BoardRepository {
     private readonly boardRepository: Repository<Board>,
   ) {}
 
-  async deleteBoard(id: number): Promise<void> {}
+  async getAllBoards(): Promise<Board[]> {
+    return this.boardRepository.find();
+  }
+
+  async updateBoardStatus(board: Board): Promise<void> {
+    await this.boardRepository.save(board);
+  }
+
+  async deleteBoard(id: number): Promise<any> {
+    const result = await this.boardRepository.delete(id);
+
+    if (!result.affected) {
+      throw new NotFoundException(`can't find Board id ${id}`);
+    }
+  }
 
   async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
     const { title, description } = createBoardDto;

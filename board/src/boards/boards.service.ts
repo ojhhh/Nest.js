@@ -11,13 +11,21 @@ export class BoardsService {
   // ============== 데이터베이스를 활용한 게시판 연습 ==============
   constructor(private boardRepository: BoardRepository) {}
 
-  async deleteBoard(id: number): Promise<void> {
-    const result = await this.boardRepository.deleteBoard(id);
+  async getAllBoards(): Promise<Board[]> {
+    return this.boardRepository.getAllBoards();
+  }
 
-    if (result === undefined) {
-      throw new NotFoundException(`can't find Board id ${id}`);
-    }
-    console.log('result : ', result);
+  async updateBoardStatus(id: number, status: BoardStatus): Promise<Board> {
+    const board = await this.getBoardById(id);
+
+    board.status = status;
+
+    await this.boardRepository.updateBoardStatus(board);
+    return board;
+  }
+
+  async deleteBoard(id: number): Promise<void> {
+    return this.boardRepository.deleteBoard(id);
   }
 
   async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
