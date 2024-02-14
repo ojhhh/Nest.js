@@ -4,9 +4,11 @@ import { BoardsService } from './boards.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Board } from './boards.entity';
 import { BoardRepository } from './boards.repository';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Board])],
+  // 인증관려 설정을 사용하기위해 AuthModule imports
+  imports: [TypeOrmModule.forFeature([Board]), AuthModule],
   controllers: [BoardsController],
   providers: [BoardsService, BoardRepository],
 })

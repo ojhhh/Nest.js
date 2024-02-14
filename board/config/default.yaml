@@ -1,0 +1,11 @@
+# 프로젝트에서 사용하는 기본적인 설정
+server:
+  port: 3000
+
+db:
+  type: 'postgres'
+  port: 5432
+  database: 'board-app'
+
+jwt:
+  expriesIn: 3600

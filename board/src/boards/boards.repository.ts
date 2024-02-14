@@ -4,6 +4,7 @@ import { CreateBoardDto } from './dto/createBoard.dto';
 import { BoardStatus } from './boardStatus.enum';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/auth/user.entity';
 
 @Injectable()
 export class BoardRepository {
@@ -20,20 +21,24 @@ export class BoardRepository {
     await this.boardRepository.save(board);
   }
 
-  async deleteBoard(id: number): Promise<any> {
-    const result = await this.boardRepository.delete(id);
+  async deleteBoard(id: number, user: User): Promise<any> {
+    const result = await this.boardRepository.delete({ id, user });
 
     if (!result.affected) {
       throw new NotFoundException(`can't find Board id ${id}`);
     }
   }
 
-  async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
+  async createBoard(
+    createBoardDto: CreateBoardDto,
+    user: User,
+  ): Promise<Board> {
     const { title, description } = createBoardDto;
     const board = this.boardRepository.create({
       title,
       description,
       status: BoardStatus.PUBLIC,
+      user: user,
     });
     await this.boardRepository.save(board);
     return board;

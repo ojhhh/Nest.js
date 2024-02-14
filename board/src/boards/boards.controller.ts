@@ -3,10 +3,12 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   Param,
   ParseIntPipe,
   Patch,
   Post,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -15,9 +17,16 @@ import { BoardStatus } from './boardStatus.enum';
 import { CreateBoardDto } from './dto/createBoard.dto';
 import { BoardStatusValidationPipe } from './pipes/boardStatusValidation.pipe';
 import { Board } from './boards.entity';
+import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from 'src/auth/get-user.decorator';
+import { User } from 'src/auth/user.entity';
 
 @Controller('boards')
+@UseGuards(AuthGuard()) // 컨트롤러 레벨의 guard를 설정하여 모든 핸들러에 적용
 export class BoardsController {
+  // BoardContorller에서 로그를 출력한다 라는 의미
+  private logger = new Logger('BoardContorller');
+
   constructor(private boardsService: BoardsService) {}
 
   // ============== 데이터베이스를 활용한 게시판 연습 ==============
@@ -29,18 +38,29 @@ export class BoardsController {
 
   @Get('')
   getAllBoard(): Promise<Board[]> {
+    this.logger.verbose(`Call method by getAllBoard`);
     return this.boardsService.getAllBoards();
   }
 
   @Post()
   @UsePipes(ValidationPipe)
-  createBoard(@Body() CreateBoardDto: CreateBoardDto): Promise<Board> {
-    return this.boardsService.createBoard(CreateBoardDto);
+  createBoard(
+    @Body() createBoardDto: CreateBoardDto,
+    @GetUser() user: User, // 게시물을 작성할때 유저의 정보도 같이 보내기 위해 설정
+  ): Promise<Board> {
+    // 누가 어떤 게시물을 만들었는지에 대한 로그를 남김
+    this.logger.verbose(
+      `User ${user.username} create a new board. Payload : ${JSON.stringify(createBoardDto)}`,
+    );
+    return this.boardsService.createBoard(createBoardDto, user);
   }
 
   @Delete('/:id')
-  deleteBoard(@Param('id', ParseIntPipe) id): Promise<void> {
-    return this.boardsService.deleteBoard(id);
+  deleteBoard(
+    @Param('id', ParseIntPipe) id,
+    @GetUser() user: User, // 해당 게시물을 작성한 유저만 게시글을 지울 수 있게 하기 위해 추가
+  ): Promise<void> {
+    return this.boardsService.deleteBoard(id, user);
   }
 
   @Patch('/:id/status')
