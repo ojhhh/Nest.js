@@ -1,73 +1,58 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Docker 
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+<br />
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## What is Docker?
+- docker는 개발자가 애플리케이션을 빠르고 쉽게 배포할 수 있도록 설계된 오픈 소스 컨테이너화 플랫폼
+- 컨테이너는 코드, 런타임, 시스템 도구, 시스템 라이브러리 및 설정을 포함하는 표준화된 단위로 각자 다른 컴퓨터 환경에도 일관되게 실행 할 수 있도록 함
 
-## Description
+<br />
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Docker 동작 원리
+1. Docker image : Docker 컨테이너를 생성하는데 사용되는 템플릿으로 애플리케이션 및 실행에 필요한 모든것을 포함
+2. Docker container : Docker 이미지를 실행한 인스턴스로 컨테이너는 격리된 환경에서 애플리케이션을 실행
+3. Docker Daemon : Docker API 요청을 수신하고 Docker 이미지, 컨테이너, 네트워크 및 볼륨을 관리하는 서비스 
+4. Docker client : 사용자가 Docker와 상호 작용 할 수 있게 해주는 CLI
 
-## Installation
+<br />
 
-```bash
-$ npm install
+## Dockerfile 기본 구성 요소
+
+- FROM : 이미지 생성의 기반이 되는 베이스 이미지를 지정
+- RUN : 이미지를 빌드하는 동안 실행할 명령어
+- CMD : 컨테이너가 시작될 때 실행할 기본 명령어 제공
+- EXPOSE : 컨테이너가 리스닝할 포트 지정
+- ENV : 환경 변수 설정
+- ADD : 파일이나 디렉토리를 이미지에 복사. 원격 URL과 압축 파일의 자동 압출 해제 기능을 지원
+- COPY : 파일이나 디렉토리를 이미지에 복사. ADD와 다르게 기본적인 복사 기능만 제공
+- VOLUME : 외부에서 접근 가능한 데이터 볼륨 생성
+- WORKDIR : 명렁어를 실행할 작업 디렉토리 설정
+
+<br />
+
+## DockerFile 기본 설정
+
 ```
+# Node.js 이미지를 베이스 이미지로 사용
+FROM node:20
 
-## Running the app
+# 작업 디렉토리 설정
+# 해당 경로는 컨테이너의 작업 경로를 의미
+WORKDIR /usr/src/app
 
-```bash
-# development
-$ npm run start
+# 의존성 파일 복사
+COPY package*.json ./
 
-# watch mode
-$ npm run start:dev
+# 프로젝트 의존성 설치
+RUN npm install
 
-# production mode
-$ npm run start:prod
+# 프로젝트 소스 복사
+COPY . .
+
+# 앱 빌드
+RUN npm run build
+
+# 앱 실행
+CMD ["npm", "run", "start:prod"]
+
 ```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
