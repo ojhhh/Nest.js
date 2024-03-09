@@ -28,6 +28,21 @@
 - VOLUME : 외부에서 접근 가능한 데이터 볼륨 생성
 - WORKDIR : 명렁어를 실행할 작업 디렉토리 설정
 
+## Docker 기본 명령어
+
+
+> docker run : 새 컨테이너를 생성하고 실행
+
+> docker pull : 지정한 이미지를 도커 허브에서 로컬로 가져옴
+
+> docker push : 로컬에서 생성한 이미지를 도커 허브에 업로드
+
+> docker images : 로컬 시스템에 있는 이미지 목록을 표시
+
+> docker ps : 실행 중인 컨테이너 목록을 표시합니다. -a 옵션을 사용하면 중지된 컨테이너도 표시
+
+> docker stop: 실행 중인 컨테이너를 중지
+
 <br />
 
 ## DockerFile 기본 설정
