@@ -1,9 +1,12 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, HttpException, UseFilters } from '@nestjs/common';
 import { AppService } from './app.service';
+import { HttpExceptionFilter } from './filter/http-exception.filter';
 
 // 해당 클래스를 Nestjs 컨트롤러로 선언하는 데코레이터
 // ()에 경로 정보가 들어가는데 아무것도 없으면 기본적으로 '/'로 인식
 @Controller()
+// controller scope : filter를 컨트롤러 전체에 적용
+// @UseFilters(HttpExceptionFilter)
 export class AppController {
   // 생성자 함수로 AppService를 해당 클래스에 private 멤버로 주입
   constructor(private readonly appService: AppService) {}
@@ -16,5 +19,12 @@ export class AppController {
   getHello(): string {
     // 주입된 AppServce의 getHello() 함수를 호출
     return this.appService.getHello();
+  }
+
+  @Get('/method-scope-test')
+  // method scope : filter를 해당 메소드에만 적용
+  @UseFilters(HttpExceptionFilter)
+  MethodScopeTest() {
+    throw new HttpException('Forbidden', 403);
   }
 }
