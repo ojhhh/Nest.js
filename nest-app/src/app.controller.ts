@@ -1,4 +1,4 @@
-import { Controller, Get, HttpException, UseFilters } from '@nestjs/common';
+import { Controller, Get, HttpException, Param, ParseIntPipe, UseFilters, UsePipes } from '@nestjs/common';
 import { AppService } from './app.service';
 import { HttpExceptionFilter } from './filter/http-exception.filter';
 
@@ -26,5 +26,17 @@ export class AppController {
   @UseFilters(HttpExceptionFilter)
   MethodScopeTest() {
     throw new HttpException('Forbidden', 403);
+  }
+
+  @Get('/pipe-test/:id')
+  // 해당 controller의 모든 핸들러 메소드에 ParseIntPipe를 적용
+  @UsePipes(new ParseIntPipe())
+  PipeTest(
+    // ParseIntPipe를 적용하지 않으면 기본적으로 id는 string
+    // id: number을 선언해줘도 ParseIntPipe를 적용하지 않으면 string으로 인식
+    // 왜냐하면 express에서는 모든 파라미터가 string으로 인식되기 때문
+    @Param('id', ParseIntPipe) id: number
+  ) {
+    return typeof id; // number
   }
 }

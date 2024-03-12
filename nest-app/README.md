@@ -17,6 +17,16 @@
 - 자주 쓰이는 HTTP 상태 코드 정리
 - Method scope, Controller scope, Global scope에 대한 설명
 
+<br />
+
 ## Pipes
+
+- https://dbdj.tistory.com/63
+- Pipes에 대한 기본 구조 및 데이터 처리 로직
+- 내장 메소드에 대한 정보 정리
+- Method level pipe, Global pipe에 대한 기본 코드 및 설명
+
+<br />
+
 ## Guards
 ## Interceptors
