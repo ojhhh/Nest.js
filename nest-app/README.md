@@ -29,4 +29,9 @@
 <br />
 
 ## Guards
+
+- https://dbdj.tistory.com/64
+- 사용자 권한과 검증에 대한 guard 기본 문법 및 구조 설명
+- 더미 객체를 사용하여 인증과 검증에 대한 예시 작성
+
 ## Interceptors

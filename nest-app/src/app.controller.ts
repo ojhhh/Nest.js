@@ -1,6 +1,9 @@
-import { Controller, Get, HttpException, Param, ParseIntPipe, UseFilters, UsePipes } from '@nestjs/common';
+import { Controller, Get, HttpException, Param, ParseIntPipe, Post, Req, SetMetadata, UseFilters, UseGuards, UsePipes } from '@nestjs/common';
 import { AppService } from './app.service';
 import { HttpExceptionFilter } from './filter/http-exception.filter';
+import { AuthGuard } from './guards/auth.guard';
+import { RolesGuard } from './guards/roles.guard';
+import { Roles } from './guards/roles.decorator';
 
 // 해당 클래스를 Nestjs 컨트롤러로 선언하는 데코레이터
 // ()에 경로 정보가 들어가는데 아무것도 없으면 기본적으로 '/'로 인식
@@ -38,5 +41,29 @@ export class AppController {
     @Param('id', ParseIntPipe) id: number
   ) {
     return typeof id; // number
+  }
+
+  @Get('/auth-guard-test')
+  @UseGuards(AuthGuard)
+  authGuardTest(
+    // request 객체를 가져오기 위해 @Req() 데코레이터 사용
+    // AuthGuard를 통과하게 된 결과를 가져오기 위해 사용
+    @Req() request: any 
+  ) {
+    // request 객체에 user 객체를 추가했기 때문에 사용 가능
+    const user = request.user;
+    return user;
+  }
+
+  @Get('/role-guard-test')
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles('user') // 어떤 역할이 접근 가능한지 설정
+  roleGuardTest(
+    // request 객체를 가져오기 위해 @Req() 데코레이터 사용
+    // RolesGuard를 통과하게 된 결과를 가져오기 위해 사용
+    @Req() request: any
+  ) {
+    const user = request.user;
+    return user;
   }
 }

@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './filter/http-exception.filter';
 import { ValidationPipe } from '@nestjs/common';
+import { AuthGuard } from './guards/auth.guard';
+import { RolesGuard } from './guards/roles.guard';
 
 // 애플리케이션을 시작하는 비동기 함수
 async function bootstrap() {
@@ -12,6 +14,10 @@ async function bootstrap() {
   // app.useGlobalFilters(new HttpExceptionFilter());
   // 전역 파이프를 적용
   // app.useGlobalPipes(new ValidationPipe());
+  // 전역 auth 가드를 적용
+  // app.useGlobalGuards(new AuthGuard());
+  // 전역 role 가드를 적용
+  // app.useGlobalGuards(new RolesGuard());
 
   // 생성된 애플리케이션을 리스닝하도록 설정
   // 기본적으로 3000포트로 설정
