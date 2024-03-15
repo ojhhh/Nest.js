@@ -1,4 +1,17 @@
-import { Controller, Get, HttpException, Param, ParseIntPipe, Post, Req, SetMetadata, UseFilters, UseGuards, UseInterceptors, UsePipes } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpException,
+  Param,
+  ParseIntPipe,
+  Post,
+  Req,
+  SetMetadata,
+  UseFilters,
+  UseGuards,
+  UseInterceptors,
+  UsePipes,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import { HttpExceptionFilter } from './filter/http-exception.filter';
 import { AuthGuard } from './guards/auth.guard';
@@ -39,7 +52,7 @@ export class AppController {
     // ParseIntPipe를 적용하지 않으면 기본적으로 id는 string
     // id: number을 선언해줘도 ParseIntPipe를 적용하지 않으면 string으로 인식
     // 왜냐하면 express에서는 모든 파라미터가 string으로 인식되기 때문
-    @Param('id', ParseIntPipe) id: number
+    @Param('id', ParseIntPipe) id: number,
   ) {
     return typeof id; // number
   }
@@ -49,7 +62,7 @@ export class AppController {
   authGuardTest(
     // request 객체를 가져오기 위해 @Req() 데코레이터 사용
     // AuthGuard를 통과하게 된 결과를 가져오기 위해 사용
-    @Req() request: any 
+    @Req() request: any,
   ) {
     // request 객체에 user 객체를 추가했기 때문에 사용 가능
     const user = request.user;
@@ -62,7 +75,7 @@ export class AppController {
   roleGuardTest(
     // request 객체를 가져오기 위해 @Req() 데코레이터 사용
     // RolesGuard를 통과하게 된 결과를 가져오기 위해 사용
-    @Req() request: any
+    @Req() request: any,
   ) {
     const user = request.user;
     return user;
@@ -72,5 +85,11 @@ export class AppController {
   @UseInterceptors(TransformInterceptor) // Method scope에 TransformInterceptor를 적용
   transformTest(): string {
     return 'transform test';
+  }
+
+  @Get('/logger-middleware-test')
+  loggerMiddlewareTest(): void {
+    console.log('미들웨어 통과 하고 비즈니스 로직 수행 중!');
+    return console.log('비즈니스 로직 수행 완료!');
   }
 }
