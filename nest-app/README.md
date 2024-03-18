@@ -46,3 +46,8 @@
 
 - https://dbdj.tistory.com/66
 - Middleware가 무엇인지 어떻게 실행되는지에 대한 흐름 정리
+
+## typeORM
+
+- postgres 데이터베이스 사용
+- typeORM 연결 테스트 및 간단한 테이블 생성
