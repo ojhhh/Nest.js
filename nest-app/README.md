@@ -51,3 +51,5 @@
 
 - postgres 데이터베이스 사용
 - typeORM 연결 테스트 및 간단한 테이블 생성
+
+## CRUD
