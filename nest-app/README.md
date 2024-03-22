@@ -52,4 +52,9 @@
 - postgres 데이터베이스 사용
 - typeORM 연결 테스트 및 간단한 테이블 생성
 
-## CRUD
+## custom decorators, jwt, passport, bcrypt
+
+- 회원가입 : bcrypt를 이용한 회원가입시 패스워드 암호화
+- 로그인 : 유저 정보 확인 후 정보가 맞으면 토큰 발행
+- 토큰 검증 : AuthGaurd를 통한 토큰 검증
+- cumtom decorator : 토큰검증시 payload 결과를 request에 저장. 컨트롤러에선 payload 내용 중 username만 필요하기 때문에 username 만 추출하는 커스텀 데코레이터 작성

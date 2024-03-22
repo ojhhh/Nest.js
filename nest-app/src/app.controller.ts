@@ -4,20 +4,18 @@ import {
   HttpException,
   Param,
   ParseIntPipe,
-  Post,
   Req,
-  SetMetadata,
   UseFilters,
   UseGuards,
   UseInterceptors,
   UsePipes,
 } from '@nestjs/common';
 import { AppService } from './app.service';
-import { HttpExceptionFilter } from './filter/http-exception.filter';
-import { AuthGuard } from './guards/auth.guard';
-import { RolesGuard } from './guards/roles.guard';
-import { Roles } from './guards/roles.decorator';
-import { TransformInterceptor } from './interceptors/transform.interceptor';
+import { HttpExceptionFilter } from './common/filter/http-exception.filter';
+import { AuthGuard } from './common/guards/auth.guard';
+import { RolesGuard } from './common/guards/roles.guard';
+import { Roles } from './common/guards/roles.decorator';
+import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 
 // 해당 클래스를 Nestjs 컨트롤러로 선언하는 데코레이터
 // ()에 경로 정보가 들어가는데 아무것도 없으면 기본적으로 '/'로 인식
