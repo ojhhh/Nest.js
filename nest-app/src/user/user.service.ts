@@ -30,8 +30,9 @@ export class UserService {
     return this.userRepository.userList();
   }
 
-  async getUserInfo(username: string) {
-    const userInfo = await this.userRepository.getUserInfo(username);
+  // 데이터베이스에 유저 정보가 있는지 확인 후 패스워드 정보만 제거한 뒤 클라이언트로 전달
+  async userInfo(username: string) {
+    const userInfo = await this.userRepository.userInfo(username);
     delete userInfo.password;
     return userInfo;
   }

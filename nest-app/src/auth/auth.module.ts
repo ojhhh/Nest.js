@@ -5,20 +5,20 @@ import { UserModule } from 'src/user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
-import { AuthRepository } from './auth.repository';
+import { UserRepository } from 'src/user/user.repository';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
     JwtModule.register({
       global: true,
-      secret: 'secretKey',
+      secret: 'secretKey', // jwtService.sign에서 사용할 비밀키
       signOptions: { expiresIn: '60s' },
     }),
     UserModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, AuthRepository],
+  providers: [AuthService, UserRepository],
 })
 export class AuthModule {}
 

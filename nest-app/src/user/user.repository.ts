@@ -13,6 +13,12 @@ export class UserRepository {
 
   // 회원가입
   async signUp(username: string, password: string): Promise<string> {
+    const checkUsername = await this.userRepository.findOneBy({ username });
+
+    if (checkUsername) {
+      return 'username already exists';
+    }
+
     const user = await this.userRepository.create({ username, password });
     await this.userRepository.save(user);
     return 'signup success';
@@ -45,7 +51,7 @@ export class UserRepository {
   }
 
   // 유저 정보
-  async getUserInfo(username: string): Promise<User> {
+  async userInfo(username: string): Promise<User> {
     return await this.userRepository.findOneBy({ username });
   }
 }

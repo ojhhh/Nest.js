@@ -14,7 +14,7 @@ import { AppService } from './app.service';
 import { HttpExceptionFilter } from './common/filter/http-exception.filter';
 import { AuthGuard } from './common/guards/auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
-import { Roles } from './common/guards/roles.decorator';
+import { Roles } from './common/decorators/roles.decorator';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 
 // 해당 클래스를 Nestjs 컨트롤러로 선언하는 데코레이터

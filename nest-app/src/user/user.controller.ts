@@ -25,8 +25,9 @@ export class UserController {
   }
 
   @Get('/userinfo')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard) // guard를 통해 토큰을 검증하고 Request에 user 정보를 담음
   async userInfo(@UserInfo() username: string): Promise<any> {
-    return this.userService.getUserInfo(username);
+    // custom decorator를 사용해 Request 요청에서 user 정보만 가져옴
+    return this.userService.userInfo(username);
   }
 }
