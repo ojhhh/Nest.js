@@ -7,9 +7,13 @@ export class PaginatePostDto {
   @IsOptional()
   where__id_more_than?: number;
 
-  @IsIn(['ASC']) // 리스트에 있는 값만 허용
+  @IsNumber()
   @IsOptional()
-  order__createdAt: 'ASC' = 'ASC';
+  where__id_less_than?: number;
+
+  @IsIn(['ASC', 'DESC']) // 리스트에 있는 값만 허용
+  @IsOptional()
+  order__createdAt: 'ASC' | 'DESC' = 'ASC';
 
   @IsNumber()
   @IsOptional()
