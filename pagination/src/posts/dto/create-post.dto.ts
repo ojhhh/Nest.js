@@ -1,9 +1,4 @@
-import { IsString } from 'class-validator';
+import { Posts } from '../entities/posts.entity';
+import { PickType } from '@nestjs/mapped-types';
 
-export class CreatePostDto {
-  @IsString()
-  title: string;
-
-  @IsString()
-  content: string;
-}
+export class CreatePostDto extends PickType(Posts, ['title', 'content']) {}

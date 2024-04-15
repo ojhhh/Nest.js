@@ -1,3 +1,4 @@
+import { IsInt, IsNotEmpty, IsString } from 'class-validator';
 import {
   BaseEntity,
   Column,
@@ -12,9 +13,13 @@ export class Posts extends BaseEntity {
   id: number;
 
   @Column()
+  @IsString({ message: '제목은 문자열이어야 합니다' })
+  @IsNotEmpty({ message: '제목은 필수 입력값입니다' })
   title: string;
 
   @Column()
+  @IsString({ message: '내용은 문자열이어야 합니다' })
+  @IsNotEmpty({ message: '내용은 필수 입력값입니다' })
   content: string;
 
   @Column({ default: 0 })
@@ -23,9 +28,13 @@ export class Posts extends BaseEntity {
   @Column({ default: 0 })
   commentCount: number;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
-  @CreateDateColumn()
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  })
   updatedAt: Date;
 }
