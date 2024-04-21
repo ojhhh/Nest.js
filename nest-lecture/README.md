@@ -50,3 +50,7 @@ JavaScript가 싱글 쓰레드로만 작동한다면, 네트워크 요청이나 
 
 - NestJS는 효율적이고 스케일링이 쉬운 NodeJS 서버를 만드는데 사용되는 프레임워크
 - Express와 Fastify를 사용 가능
+
+### Dependency Injection (의존성 주입, DI)
+
+### Inversion of Control (제어의 역전, IoC)

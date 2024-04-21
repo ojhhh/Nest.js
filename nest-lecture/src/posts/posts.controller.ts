@@ -1,8 +1,8 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   Post,
   Put,
@@ -15,7 +15,7 @@ export class PostsController {
 
   @Get()
   getPosts() {
-    return this.postsService.getPosts();
+    return this.postsService.getAllPosts();
   }
 
   @Get(':id')
@@ -23,18 +23,18 @@ export class PostsController {
     return this.postsService.getPostById(+id);
   }
 
-  @Post(':id')
-  postPosts(@Param('id') id: string) {
-    return this.postsService.createPost();
+  @Post()
+  postPosts(@Body('authorId') authorId: number, @Body() body: any) {
+    return this.postsService.createPost(authorId, body);
   }
 
   @Put(':id')
-  putPost(@Param('id') id: string) {
-    return this.postsService.updatePost();
+  putPost(@Param('id') id: number, @Body() body: any) {
+    return this.postsService.updatePost(id, body);
   }
 
   @Delete(':id')
-  deletePost(@Param('id') id: string) {
-    return this.postsService.deletePost();
+  deletePost(@Param('id') id: number) {
+    return this.postsService.deletePost(id);
   }
 }
