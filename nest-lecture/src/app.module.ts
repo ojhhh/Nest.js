@@ -9,6 +9,7 @@ import { Users } from './users/entities/users.entity';
 import { Posts } from './posts/entities/posts.entity';
 import { CommonModule } from './common/common.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
   imports: [
@@ -21,6 +22,10 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
       database: 'postgres',
       entities: [Users, Posts],
       synchronize: true,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: 'public/posts',
+      serveRoot: '/public',
     }),
     PostsModule,
     AuthModule,
