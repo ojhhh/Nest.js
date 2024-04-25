@@ -17,7 +17,6 @@ export class BearTokenGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest();
     const rawToken = req.headers['authorization'];
-
     if (!rawToken) {
       throw new UnauthorizedException('Token is empty');
     }

@@ -2,13 +2,7 @@ import { Posts } from 'src/posts/entities/posts.entity';
 import { Column, Entity, OneToMany } from 'typeorm';
 import { RolesEnum } from '../const/roles.const';
 import { BaseModel } from 'src/common/entity/base.entity';
-import {
-  IsEmail,
-  IsString,
-  Length,
-  MaxLength,
-  ValidationArguments,
-} from 'class-validator';
+import { IsEmail, IsString, Length, MaxLength } from 'class-validator';
 import { lengthValidationMessage } from 'src/common/validation-message/length-validation.message';
 import { stringValidationMessage } from 'src/common/validation-message/string-validation.message';
 import { emailValidationMessage } from 'src/common/validation-message/email-validation.message';

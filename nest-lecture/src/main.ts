@@ -5,7 +5,14 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      transformOptions: {
+        enableImplicitConversion: true, // dto 어노테이션에서 타입을 변환하는 과정을 자동으로 처리
+      },
+    }),
+  );
 
   await app.listen(3000);
 }

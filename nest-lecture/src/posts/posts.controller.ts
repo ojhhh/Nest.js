@@ -1,6 +1,5 @@
 import {
   Body,
-  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -8,24 +7,30 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Put,
-  Request,
+  Query,
   UseGuards,
-  UseInterceptors,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { AccessTokenGuard } from 'src/auth/guard/bearer-token.guard';
 import { User } from 'src/users/decorator/user.decorator';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { PaginatePostDto } from './dto/paginte-post.dto';
+import { Users } from 'src/users/entities/users.entity';
 
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
+  // @Post('random')
+  // @UseGuards(AccessTokenGuard)
+  // postPostsRandom(@User() user: Users) {
+  //   return this.postsService.generatePosts(user.id);
+  // }
+
   @Get()
-  getPosts() {
-    return this.postsService.getAllPosts();
+  getPosts(@Query() query: PaginatePostDto) {
+    return this.postsService.paginatePosts(query);
   }
 
   @Get(':id')
