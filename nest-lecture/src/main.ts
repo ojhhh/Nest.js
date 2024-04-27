@@ -11,6 +11,8 @@ async function bootstrap() {
       transformOptions: {
         enableImplicitConversion: true, // dto 어노테이션에서 타입을 변환하는 과정을 자동으로 처리
       },
+      whitelist: true,
+      forbidNonWhitelisted: true,
     }),
   );
 
