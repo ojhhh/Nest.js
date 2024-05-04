@@ -1,3 +1,6 @@
+import { Transform } from 'class-transformer';
+import { join } from 'path';
+import { POST_PUBLIC_IMAGE_PATH } from 'src/common/const/path.const';
 import { BaseModel } from 'src/common/entity/base.entity';
 import { Users } from 'src/users/entities/users.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
@@ -21,6 +24,7 @@ export class Posts extends BaseModel {
   @Column({
     nullable: true,
   })
+  @Transform(({ value }) => value && `/${join(POST_PUBLIC_IMAGE_PATH, value)}`)
   image?: string;
 
   @Column()

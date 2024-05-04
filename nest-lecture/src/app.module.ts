@@ -18,11 +18,12 @@ import {
   ENV_DB_PORT_KEY,
   ENV_DB_USERNAME_KEY,
 } from './common/const/env-keys.const';
+import { public_FOLDER_PATH } from './common/const/path.const';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: 'env',
+      envFilePath: '.env',
       isGlobal: true,
     }),
     TypeOrmModule.forRoot({
@@ -36,7 +37,7 @@ import {
       synchronize: true,
     }),
     ServeStaticModule.forRoot({
-      rootPath: 'public/posts',
+      rootPath: public_FOLDER_PATH,
       serveRoot: '/public',
     }),
     PostsModule,

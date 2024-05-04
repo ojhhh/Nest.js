@@ -31,9 +31,10 @@ export class AuthService {
   }
 
   loginUser(user: Pick<Users, 'email' | 'id'>) {
-    const accessToken = this.signToken(user, false);
-    const refreshToken = this.signToken(user, true);
-    return { accessToken, refreshToken };
+    return {
+      accessToken: this.signToken(user, false),
+      refreshToken: this.signToken(user, true),
+    };
   }
 
   async authenticateWithEmailAndPassword(
