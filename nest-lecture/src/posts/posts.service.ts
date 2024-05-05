@@ -1,6 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsWhere, LessThan, MoreThan, Repository } from 'typeorm';
+import {
+  FindOptionsWhere,
+  LessThan,
+  MoreThan,
+  QueryRunner,
+  Repository,
+} from 'typeorm';
 import { Posts } from './entities/posts.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -11,37 +21,50 @@ import {
   ENV_HOST_KEY,
   ENV_PROTOCOL_KEY,
 } from 'src/common/const/env-keys.const';
+import {
+  POST_IMAGE_PATH,
+  TEMP_FOLDER_PATH,
+  public_FOLDER_PATH,
+} from 'src/common/const/path.const';
+import { basename, join } from 'path';
+import { promises } from 'fs';
+import { CreatePostImageDto } from './image/dto/create-image.dto';
+import { Images } from 'src/common/entity/image.entity';
+import { DEFAULT_POST_FIND_OPTIONS } from './const/default-post-find-options.const';
 
 @Injectable()
 export class PostsService {
   constructor(
     @InjectRepository(Posts)
     private readonly postsRepository: Repository<Posts>,
+    @InjectRepository(Images)
+    private readonly imagesRepository: Repository<Images>,
     private readonly commonService: CommonService,
     private readonly configService: ConfigService,
   ) {}
 
   async getAllPosts() {
     return await this.postsRepository.find({
-      relations: ['author'],
+      ...DEFAULT_POST_FIND_OPTIONS,
     });
   }
 
-  // async generatePosts(userId: number) {
-  //   for (let i = 0; i < 100; i++) {
-  //     await this.createPost(1, {
-  //       title: `임의 생성 제목 ${i}`,
-  //       content: `임의 생성 내용 ${i}`,
-  //     });
-  //   }
-  // }
+  async generatePosts(userId: number) {
+    for (let i = 0; i < 100; i++) {
+      await this.createPost(1, {
+        title: `임의 생성 제목 ${i}`,
+        content: `임의 생성 내용 ${i}`,
+        images: [],
+      });
+    }
+  }
 
   async paginatePosts(dto: PaginatePostDto) {
     return this.commonService.paginate(
       dto,
       this.postsRepository,
       {
-        relations: ['author'],
+        ...DEFAULT_POST_FIND_OPTIONS,
       },
       'posts',
     );
@@ -129,8 +152,8 @@ export class PostsService {
 
   async getPostById(id: number) {
     const post = await this.postsRepository.findOne({
+      ...DEFAULT_POST_FIND_OPTIONS,
       where: { id },
-      relations: ['author'],
     });
 
     if (!post) {
@@ -140,18 +163,24 @@ export class PostsService {
     return post;
   }
 
-  async createPost(authorId: number, postDto: CreatePostDto, image?: string) {
-    const post = this.postsRepository.create({
+  getRepository(qr?: QueryRunner) {
+    return qr ? qr.manager.getRepository<Posts>(Posts) : this.postsRepository;
+  }
+
+  async createPost(authorId: number, postDto: CreatePostDto, qr?: QueryRunner) {
+    const repository = this.getRepository(qr);
+
+    const post = repository.create({
       author: {
         id: authorId,
       },
       ...postDto,
-      image,
+      images: [],
       likeCount: 0,
       commentCount: 0,
     });
 
-    const newPost = await this.postsRepository.save(post);
+    const newPost = await repository.save(post);
 
     return newPost;
   }

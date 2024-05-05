@@ -19,6 +19,7 @@ import {
   ENV_DB_USERNAME_KEY,
 } from './common/const/env-keys.const';
 import { public_FOLDER_PATH } from './common/const/path.const';
+import { Images } from './common/entity/image.entity';
 
 @Module({
   imports: [
@@ -33,7 +34,7 @@ import { public_FOLDER_PATH } from './common/const/path.const';
       username: process.env[ENV_DB_USERNAME_KEY],
       password: process.env[ENV_DB_PASSWORD_KEY],
       database: process.env[ENV_DB_DATABASE_KEY],
-      entities: [Users, Posts],
+      entities: [Users, Posts, Images],
       synchronize: true,
     }),
     ServeStaticModule.forRoot({

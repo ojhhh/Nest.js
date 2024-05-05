@@ -2,8 +2,15 @@ import { Transform } from 'class-transformer';
 import { join } from 'path';
 import { POST_PUBLIC_IMAGE_PATH } from 'src/common/const/path.const';
 import { BaseModel } from 'src/common/entity/base.entity';
+import { Images } from 'src/common/entity/image.entity';
 import { Users } from 'src/users/entities/users.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Posts extends BaseModel {
@@ -21,15 +28,12 @@ export class Posts extends BaseModel {
   @Column()
   content: string;
 
-  @Column({
-    nullable: true,
-  })
-  @Transform(({ value }) => value && `/${join(POST_PUBLIC_IMAGE_PATH, value)}`)
-  image?: string;
-
   @Column()
   likeCount: number;
 
   @Column()
   commentCount: number;
+
+  @OneToMany((type) => Images, (image) => image.post)
+  images?: Images[];
 }
