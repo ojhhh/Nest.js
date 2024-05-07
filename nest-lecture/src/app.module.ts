@@ -1,4 +1,10 @@
-import { ClassSerializerInterceptor, Module } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PostsModule } from './posts/posts.module';
@@ -20,6 +26,7 @@ import {
 } from './common/const/env-keys.const';
 import { public_FOLDER_PATH } from './common/const/path.const';
 import { Images } from './common/entity/image.entity';
+import { logMiddleWare } from './common/middleware/log.middleware';
 
 @Module({
   imports: [
@@ -55,4 +62,13 @@ import { Images } from './common/entity/image.entity';
     },
   ],
 })
-export class AppModule {}
+// 미들웨어는 모듈에 적용
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(logMiddleWare).forRoutes({
+      // path: 'posts', // 정확히 posts에만 적용
+      path: '*', // posts 라우트에 모두 적용
+      method: RequestMethod.ALL,
+    });
+  }
+}

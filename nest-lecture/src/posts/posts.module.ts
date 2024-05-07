@@ -1,4 +1,10 @@
-import { BadRequestException, Module } from '@nestjs/common';
+import {
+  BadRequestException,
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { PostsController } from './posts.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
