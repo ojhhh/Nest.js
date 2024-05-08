@@ -27,6 +27,7 @@ import {
 import { public_FOLDER_PATH } from './common/const/path.const';
 import { Images } from './common/entity/image.entity';
 import { logMiddleWare } from './common/middleware/log.middleware';
+import { ChatsModule } from './chats/chats.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { logMiddleWare } from './common/middleware/log.middleware';
     AuthModule,
     UsersModule,
     CommonModule,
+    ChatsModule,
   ],
   controllers: [AppController],
   providers: [
