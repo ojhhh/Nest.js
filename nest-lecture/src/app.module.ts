@@ -28,6 +28,7 @@ import { public_FOLDER_PATH } from './common/const/path.const';
 import { Images } from './common/entity/image.entity';
 import { logMiddleWare } from './common/middleware/log.middleware';
 import { ChatsModule } from './chats/chats.module';
+import { Chats } from './chats/entity/chats.entity';
 
 @Module({
   imports: [
@@ -42,7 +43,7 @@ import { ChatsModule } from './chats/chats.module';
       username: process.env[ENV_DB_USERNAME_KEY],
       password: process.env[ENV_DB_PASSWORD_KEY],
       database: process.env[ENV_DB_DATABASE_KEY],
-      entities: [Users, Posts, Images],
+      entities: [Users, Posts, Images, Chats],
       synchronize: true,
     }),
     ServeStaticModule.forRoot({

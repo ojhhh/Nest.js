@@ -1,5 +1,5 @@
 import { Posts } from 'src/posts/entities/posts.entity';
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import { RolesEnum } from '../const/roles.const';
 import { BaseModel } from 'src/common/entity/base.entity';
 import { IsEmail, IsString, Length, MaxLength } from 'class-validator';
@@ -7,6 +7,7 @@ import { lengthValidationMessage } from 'src/common/validation-message/length-va
 import { stringValidationMessage } from 'src/common/validation-message/string-validation.message';
 import { emailValidationMessage } from 'src/common/validation-message/email-validation.message';
 import { Exclude, Expose } from 'class-transformer';
+import { Chats } from 'src/chats/entity/chats.entity';
 
 @Entity()
 export class Users extends BaseModel {
@@ -65,4 +66,7 @@ export class Users extends BaseModel {
 
   // @CreateDateColumn()
   // createdAt: Date;
+  @ManyToMany(() => Chats, (chat) => chat.users)
+  @JoinTable()
+  chats: Chats[];
 }
