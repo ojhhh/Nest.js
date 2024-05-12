@@ -13,10 +13,11 @@ export class MarkdownService {
       fs.mkdirSync(dirPath, { recursive: true });
     }
 
-    // 파일 이름에 사용할 수 없는 'undefined'를 피하고, 올바른 파일명을 생성
-    const fileName = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}_${subject}.md`;
+    const fileName = `${Math.floor(date.getTime() / 1000)}_${subject}.md`;
     const filePath = path.join(dirPath, fileName);
 
     fs.writeFileSync(filePath, text, 'utf8');
+
+    return fs;
   }
 }
